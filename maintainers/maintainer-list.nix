@@ -8318,6 +8318,12 @@
     githubId = 9267430;
     name = "Philipp Mildenberger";
   };
+  PhilTaken = {
+    email = "philipp.herzog@protonmail.com";
+    github = "PhilTaken";
+    githubId = 13309623;
+    name = "Philipp Herzog";
+  };
   Phlogistique = {
     email = "noe.rubinstein@gmail.com";
     github = "Phlogistique";
