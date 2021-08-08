@@ -17,8 +17,22 @@ in {
     };
 
     configFile = mkOption {
-      type = path;
-      description = "Path to the config file for the innernet server interface";
+      default = null;
+      type = nullOr path;
+      description = "Path to the config file for the innernet server interface.";
+    };
+
+    config = mkOption {
+      default = null;
+      type = nullOr str;
+      description = "Configuration as string";
+    };
+
+    interfaceName = mkOption {
+      default = null;
+      type = nullOr str;
+      description = "Interface name for the server";
+      example = "innernet0";
     };
 
     package = mkOption {
@@ -35,15 +49,28 @@ in {
   };
 
   config = let
-    interfaceName = builtins.head (builtins.match "[a-zA-Z_/-]+/([a-zA-Z_-]+).conf" "${cfg.configFile}");
+    interfaceName = if cfg.configFile != null
+      then builtins.head (builtins.match "/nix/store/[a-zA-Z0-9]+-([a-zA-Z_-]+).conf" "${cfg.configFile}")
+      else cfg.interfaceName;
+
   in mkIf cfg.enable {
+    assertions = [
+      {
+        assertion = (cfg.configFile == null) != (cfg.config == null);
+        message = "Either but not both `configFile` and `config` should be specified for innernet.";
+      }
+    ];
+
     networking.wireguard.enable = true;
     networking.firewall.allowedTCPPorts = mkIf cfg.openFirewall [ cfg.port ];
 
     environment.systemPackages = [ cfg.package ]; # for the CLI
     environment.etc = {
       "innernet-server/${interfaceName}.conf" = {
-        mode = "0644"; text = fileContents "${cfg.configFile}";
+        mode = "0644";
+        text = if cfg.configFile != null
+          then fileContents "${cfg.configFile}"
+          else "${cfg.config}";
       };
     };
 
