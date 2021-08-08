@@ -35,7 +35,7 @@ in {
   };
 
   config = let
-    interfaceName = builtins.head (builtins.match "[a-zA-Z_/-]+/([a-zA-Z_-]+).conf");
+    interfaceName = builtins.head (builtins.match "[a-zA-Z_/-]+/([a-zA-Z_-]+).conf" "${cfg.configFile}");
   in mkIf cfg.enable {
     networking.wireguard.enable = true;
     networking.firewall.allowedTCPPorts = mkIf cfg.openFirewall [ cfg.port ];
