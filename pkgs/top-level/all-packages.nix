@@ -10,19 +10,6 @@ res: pkgs: super:
 
 with pkgs;
 
-let
-  self =
-    builtins.trace ''
-        It seems that you are using a patched Nixpkgs that references the self
-        variable in pkgs/top-level/all-packages.nix. This variable was incorrectly
-        named, so its usage needs attention. Please use pkgs for packages or super
-        for functions.
-      ''
-      res; # Do *NOT* use res in your fork. It will be removed.
-
-  # TODO: turn self into an error
-
-in
 {
 
   # A stdenv capable of building 32-bit binaries.  On x86_64-linux,
@@ -3261,6 +3248,8 @@ in
 
   psrecord = python3Packages.callPackage ../tools/misc/psrecord {};
 
+  reg = callPackage ../tools/virtualization/reg { };
+
   river = callPackage ../applications/window-managers/river { };
 
   rmapi = callPackage ../applications/misc/remarkable/rmapi { };
@@ -5147,7 +5136,9 @@ in
 
   gexiv2 = callPackage ../development/libraries/gexiv2 { };
 
-  gftp = callPackage ../tools/networking/gftp { };
+  gftp = callPackage ../applications/networking/gftp {
+    gtk = gtk2;
+  };
 
   gfbgraph = callPackage ../development/libraries/gfbgraph { };
 
@@ -6842,6 +6833,8 @@ in
 
   libmesode = callPackage ../development/libraries/libmesode {};
 
+  libmsym = callPackage ../development/libraries/science/chemistry/libmsym { };
+
   libnabo = callPackage ../development/libraries/libnabo { };
 
   libngspice = callPackage ../development/libraries/libngspice { };
@@ -8077,6 +8070,10 @@ in
 
   pixiewps = callPackage ../tools/networking/pixiewps {};
 
+  pinyin-tool = callPackage ../tools/text/pinyin-tool {
+    inherit (darwin.apple_sdk.frameworks) Security;
+  };
+
   pk2cmd = callPackage ../tools/misc/pk2cmd { };
 
   plantuml = callPackage ../tools/misc/plantuml { };
@@ -8731,6 +8728,8 @@ in
   scdoc = callPackage ../tools/typesetting/scdoc { };
 
   scmpuff = callPackage ../applications/version-management/git-and-tools/scmpuff { };
+
+  scorecard = callPackage ../tools/security/scorecard { };
 
   scream = callPackage ../applications/audio/scream { };
 
@@ -11918,14 +11917,10 @@ in
   mint = callPackage ../development/compilers/mint { };
 
   mitscheme = callPackage ../development/compilers/mit-scheme {
-    texLive = texlive.combine { inherit (texlive) scheme-small; };
-    texinfo = texinfo5;
-    xlibsWrapper = null;
+    texLive = texlive.combine { inherit (texlive) scheme-small epsf texinfo; };
   };
 
   mitschemeX11 = mitscheme.override {
-    texLive = texlive.combine { inherit (texlive) scheme-small; };
-    texinfo = texinfo5;
     enableX11 = true;
   };
 
@@ -11964,7 +11959,7 @@ in
 
   roslyn = callPackage ../development/compilers/roslyn { };
 
-  msbuild = callPackage ../development/tools/build-managers/msbuild { };
+  msbuild = callPackage ../development/tools/build-managers/msbuild { dotnet-sdk = dotnet-sdk_5; };
 
   mosml = callPackage ../development/compilers/mosml { };
 
@@ -14078,6 +14073,8 @@ in
 
   mkdocs = callPackage ../development/tools/documentation/mkdocs { };
 
+  mmtf-cpp = callPackage ../development/libraries/science/chemistry/mmtf-cpp { };
+
   mockgen = callPackage ../development/tools/mockgen { };
 
   modd = callPackage ../development/tools/modd { };
@@ -14475,6 +14472,10 @@ in
   swigWithJava = swig;
 
   c2ffi = callPackage ../development/tools/misc/c2ffi { };
+
+  c3c = callPackage ../development/compilers/c3c {
+    llvmPackages = llvmPackages_11;
+  };
 
   swfmill = callPackage ../tools/video/swfmill { };
 
@@ -16740,6 +16741,8 @@ in
   libffcall = callPackage ../development/libraries/libffcall { };
 
   libffi = callPackage ../development/libraries/libffi { };
+
+  libfreeaptx = callPackage ../development/libraries/libfreeaptx { };
 
   libfreefare = callPackage ../development/libraries/libfreefare {
     inherit (darwin) libobjc;
@@ -19736,7 +19739,7 @@ in
   grafana-agent = callPackage ../servers/monitoring/grafana-agent { };
 
   grafana-loki = callPackage ../servers/monitoring/loki {
-    buildGoModule = buildGo115Module;
+    buildGoModule = buildGo116Module;
   };
 
   grafana_reporter = callPackage ../servers/monitoring/grafana-reporter { };
@@ -21554,12 +21557,17 @@ in
     inherit name src;
     depsBuildBuild = [ buildPackages.stdenv.cc ]
       ++ lib.optionals (lib.versionAtLeast version "4.16") [ buildPackages.bison buildPackages.flex ];
+    postPatch = ''
+      patchShebangs scripts/
+    '';
     buildPhase = ''
+      (
       set -x
       make \
         ARCH=${stdenv.hostPlatform.linuxArch} \
         HOSTCC=${buildPackages.stdenv.cc.targetPrefix}gcc \
         ${makeTarget}
+      )
     '';
     installPhase = ''
       cp .config $out
@@ -23105,6 +23113,8 @@ in
 
   vistafonts-chs = callPackage ../data/fonts/vista-fonts-chs { };
 
+  vistafonts-cht = callPackage ../data/fonts/vista-fonts-cht { };
+
   vollkorn = callPackage ../data/fonts/vollkorn { };
 
   weather-icons = callPackage ../data/fonts/weather-icons { };
@@ -23374,6 +23384,8 @@ in
   backintime-qt = libsForQt5.callPackage ../applications/networking/sync/backintime/qt.nix { };
 
   backintime = backintime-qt;
+
+  ballerburg = callPackage ../games/ballerburg { } ;
 
   balsa = callPackage ../applications/networking/mailreaders/balsa { };
 
@@ -24052,6 +24064,8 @@ in
   exercism = callPackage ../applications/misc/exercism { };
 
   expenses = callPackage ../applications/misc/expenses { };
+
+  fnott = callPackage ../applications/misc/fnott { };
 
   go-libp2p-daemon = callPackage ../servers/go-libp2p-daemon { };
 
@@ -25503,6 +25517,8 @@ in
 
   kubernetes-helmPlugins = dontRecurseIntoAttrs (callPackage ../applications/networking/cluster/helm/plugins { });
 
+  chart-testing = callPackage ../applications/networking/cluster/helm/chart-testing { };
+
   kubetail = callPackage ../applications/networking/cluster/kubetail { } ;
 
   kupfer = callPackage ../applications/misc/kupfer {
@@ -26221,6 +26237,8 @@ in
 
   yambar = callPackage ../applications/misc/yambar { };
 
+  yambar-wayland = callPackage ../applications/misc/yambar { waylandSupport = true; };
+
   polyphone = libsForQt514.callPackage ../applications/audio/polyphone { };
 
   portfolio = callPackage ../applications/office/portfolio {
@@ -26752,9 +26770,7 @@ in
 
   polylith = callPackage ../development/tools/misc/polylith { };
 
-  polymake = callPackage ../applications/science/math/polymake {
-    openjdk = openjdk8; # TODO: remove override https://github.com/NixOS/nixpkgs/pull/89731
-  };
+  polymake = callPackage ../applications/science/math/polymake { };
 
   pond = callPackage ../applications/networking/instant-messengers/pond { };
 
@@ -27093,8 +27109,6 @@ in
   # librtlsdr is a friendly fork with additional features
   rtl-sdr = callPackage ../applications/radio/rtl-sdr { };
   librtlsdr = callPackage ../development/libraries/librtlsdr { };
-
-  rtv = callPackage ../applications/misc/rtv { };
 
   rubyripper = callPackage ../applications/audio/rubyripper {};
 
@@ -27889,7 +27903,7 @@ in
   wrapNeovimUnstable = callPackage ../applications/editors/neovim/wrapper.nix { };
   wrapNeovim = neovim-unwrapped: lib.makeOverridable (neovimUtils.legacyWrapper neovim-unwrapped);
   neovim-unwrapped = callPackage ../applications/editors/neovim {
-    # neovim doesn't build with luajit on aarch64:
+    # neovim doesn't build with luajit on aarch64-darwin :
     # ./luarocks init
     # PANIC: unprotected error in call to Lua API (module 'luarocks.core.hardcoded' not found:
     #         no field package.preload['luarocks.core.hardcoded']
@@ -27913,7 +27927,7 @@ in
     # See https://github.com/NixOS/nixpkgs/issues/129099
     # Possibly related: https://github.com/neovim/neovim/issues/7879
     lua =
-      if stdenv.isAarch64 then lua5_1 else
+      if (stdenv.isDarwin && stdenv.isAarch64) then lua5_1 else
       luajit;
   };
 
@@ -28501,6 +28515,8 @@ in
   apvlv = callPackage ../applications/misc/apvlv { };
 
   xpdf = libsForQt5.callPackage ../applications/misc/xpdf { };
+
+  xplugd = callPackage ../tools/X11/xplugd { };
 
   xpointerbarrier = callPackage ../tools/X11/xpointerbarrier {};
 
@@ -30077,6 +30093,12 @@ in
     openbabel = openbabel2;
     eigen = eigen2;
   };
+
+  avogadrolibs = libsForQt5.callPackage ../development/libraries/science/chemistry/avogadrolibs { };
+
+  molequeue = libsForQt5.callPackage ../development/libraries/science/chemistry/molequeue { };
+
+  avogadro2 = libsForQt5.callPackage ../applications/science/chemistry/avogadro2 { };
 
   chemtool = callPackage ../applications/science/chemistry/chemtool { };
 
@@ -32636,7 +32658,7 @@ in
     stdenv = crossLibcStdenv;
     };
 
-  omnisharp-roslyn = callPackage ../development/tools/omnisharp-roslyn { };
+  omnisharp-roslyn = callPackage ../development/tools/omnisharp-roslyn { dotnet-sdk = dotnet-sdk_5; };
 
   wasmtime = callPackage ../development/interpreters/wasmtime {};
 

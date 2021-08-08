@@ -390,6 +390,12 @@
     githubId = 1318982;
     name = "Anders Claesson";
   };
+  akho = {
+    name = "Alexander Khodyrev";
+    email = "a@akho.name";
+    github = "akho";
+    githubId = 104951;
+  };
   akru = {
     email = "mail@akru.me";
     github = "akru";
@@ -3236,6 +3242,12 @@
       longkeyid = "rsa4096/0x6C79278F3FCDCC02";
       fingerprint = "2D37 1AD2 7E2B BC77 97E1  B759 6C79 278F 3FCD CC02";
     }];
+  };
+  ereslibre = {
+    email = "ereslibre@ereslibre.es";
+    github = "ereslibre";
+    githubId = 8706;
+    name = "Rafael Fernández López";
   };
   ericbmerritt = {
     email = "eric@afiniate.com";
@@ -8567,6 +8579,12 @@
     name = "Polygon";
     github = "polygon";
     githubId = 51489;
+  };
+  polykernel = {
+    email = "81340136+polykernel@users.noreply.github.com";
+    github = "polykernel";
+    githubId = 81340136;
+    name = "polykernel";
   };
   polyrod = {
     email = "dc1mdp@gmail.com";

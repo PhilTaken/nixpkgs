@@ -189,6 +189,8 @@ in {
 
   adal = callPackage ../development/python-modules/adal { };
 
+  adax = callPackage ../development/python-modules/adax { };
+
   adb-enhanced = callPackage ../development/python-modules/adb-enhanced { };
 
   adb-homeassistant = callPackage ../development/python-modules/adb-homeassistant { };
@@ -566,6 +568,8 @@ in {
   aspell-python = callPackage ../development/python-modules/aspell-python { };
 
   aspy-yaml = callPackage ../development/python-modules/aspy.yaml { };
+
+  assertpy = callPackage ../development/python-modules/assertpy { };
 
   asteval = callPackage ../development/python-modules/asteval { };
 
@@ -3940,10 +3944,9 @@ in {
 
   kmapper = callPackage ../development/python-modules/kmapper { };
 
-  kmsxx = toPythonModule ((callPackage ../development/libraries/kmsxx {
-    inherit (pkgs.kmsxx) stdenv;
+  kmsxx = toPythonModule (pkgs.kmsxx.override {
     withPython = true;
-  }).overrideAttrs (oldAttrs: { name = "${python.libPrefix}-${pkgs.kmsxx.name}"; }));
+  });
 
   knack = callPackage ../development/python-modules/knack { };
 
@@ -4230,6 +4233,8 @@ in {
 
   lmtpd = callPackage ../development/python-modules/lmtpd { };
 
+  loca = callPackage ../development/python-modules/loca { };
+
   localimport = callPackage ../development/python-modules/localimport { };
 
   localzone = callPackage ../development/python-modules/localzone { };
@@ -4408,7 +4413,7 @@ in {
   maya = callPackage ../development/python-modules/maya { };
 
   mayavi = pkgs.libsForQt5.callPackage ../development/python-modules/mayavi {
-    inherit buildPythonPackage isPy27 fetchPypi;
+    inherit buildPythonPackage pythonOlder fetchPypi;
     inherit (self) pyface pygments numpy vtk traitsui envisage apptools pyqt5;
   };
 
@@ -4993,6 +4998,8 @@ in {
   onkyo-eiscp = callPackage ../development/python-modules/onkyo-eiscp { };
 
   onnx = callPackage ../development/python-modules/onnx { };
+
+  open-garage = callPackage ../development/python-modules/open-garage { };
 
   openant = callPackage ../development/python-modules/openant { };
 
@@ -6898,6 +6905,8 @@ in {
 
   pytest-mock = callPackage ../development/python-modules/pytest-mock { };
 
+  pytest-mockservers = callPackage ../development/python-modules/pytest-mockservers { };
+
   pytest-mpl = callPackage ../development/python-modules/pytest-mpl { };
 
   pytest-mypy = callPackage ../development/python-modules/pytest-mypy { };
@@ -6935,6 +6944,8 @@ in {
   pytest-repeat = callPackage ../development/python-modules/pytest-repeat { };
 
   pytest-rerunfailures = callPackage ../development/python-modules/pytest-rerunfailures { };
+
+  pytest-resource-path = callPackage ../development/python-modules/pytest-resource-path { };
 
   pytest-runner = callPackage ../development/python-modules/pytest-runner { };
 
@@ -8723,6 +8734,8 @@ in {
 
   timelib = callPackage ../development/python-modules/timelib { };
 
+  time-machine = callPackage ../development/python-modules/time-machine { };
+
   timeout-decorator = callPackage ../development/python-modules/timeout-decorator { };
 
   timezonefinder = callPackage ../development/python-modules/timezonefinder { };
@@ -8788,6 +8801,8 @@ in {
 
   # Used by streamlit, graphite_beacon, 2021-01-29
   tornado_5 = callPackage ../development/python-modules/tornado/5.nix { };
+
+  torrequest = callPackage ../development/python-modules/torrequest { };
 
   total-connect-client = callPackage ../development/python-modules/total-connect-client { };
 
@@ -8928,6 +8943,8 @@ in {
   typer = callPackage ../development/python-modules/typer { };
 
   types-decorator = callPackage ../development/python-modules/types-decorator { };
+
+  types-pytz = callPackage ../development/python-modules/types-pytz { };
 
   types-requests = callPackage ../development/python-modules/types-requests { };
 
@@ -9424,6 +9441,8 @@ in {
   };
 
   xmltodict = callPackage ../development/python-modules/xmltodict { };
+
+  xml-marshaller = callPackage ../development/python-modules/xml-marshaller { };
 
   xmodem = callPackage ../development/python-modules/xmodem { };
 
