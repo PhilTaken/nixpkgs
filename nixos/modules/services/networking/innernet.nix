@@ -63,6 +63,7 @@ in {
 
     networking.wireguard.enable = true;
     networking.firewall.allowedTCPPorts = mkIf cfg.openFirewall [ cfg.port ];
+    networking.firewall.allowedUDPPorts = mkIf cfg.openFirewall [ cfg.port ];
 
     environment.systemPackages = [ cfg.package ]; # for the CLI
     environment.etc = {
